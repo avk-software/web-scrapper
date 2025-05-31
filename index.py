@@ -299,29 +299,29 @@ class CurrencyScraper:
         if not exchange_block:
             return []
         
-            eur_rate = exchange_block.select('#cur_rates_eur')[0].get_text().strip()
-            usd_rate = exchange_block.select('#cur_rates_usd')[0].get_text().strip()
+        eur_rate = exchange_block.select('#cur_rates_eur')[0].get_text().strip()
+        usd_rate = exchange_block.select('#cur_rates_usd')[0].get_text().strip()
             
-            return [
-                {
-                    id: 3995,
-                    sectionId: 571,
-                    name: 'EUR',
-                    touroperator: 'Арт Тур',
-                    rate: eur_rate,
-                    'percentToCB': '',
-                    'delta': ''
-                },
-                {
-                    id: 3997,
-                    sectionId: 571,
-                    name: 'USD',
-                    touroperator: 'Арт Тур',
-                    'rate': usd_rate,
-                    'percentToCB': '',
-                    'delta': ''
-                }
-            ]
+        return [
+            {
+                'id': 3995,
+                'sectionId': 571,
+                'name': 'EUR',
+                'touroperator': 'Арт Тур',
+                'rate': eur_rate,
+                'percentToCB': '',
+                'delta': ''
+            },
+            {
+                'id': 3997,
+                'sectionId': 571,
+                'name': 'USD',
+                'touroperator': 'Арт Тур',
+                'rate': usd_rate,
+                'percentToCB': '',
+                'delta': ''
+            }
+        ]
     
     def scrape_all_sites(self) -> Dict:
         """Скреппинг всех сайтов"""
@@ -365,12 +365,12 @@ class CurrencyScraper:
             {
                 'name': 'TEZ Tour', 
                 'url': 'https://www.tez-tour.com/',  
-                'scraper': self.scrape_tez-tour_site
+                'scraper': self.scrape_tez_tour_site
             },
             {
                 'name': 'Grand Travels', 
                 'url': 'https://grand-travels.ru/',  
-                'scraper': self.scrape_grand-travels_site
+                'scraper': self.scrape_grand_travels_site
             },
             {
                 'name': 'Loti', 
@@ -410,7 +410,7 @@ class CurrencyScraper:
             {
                 'name': 'Амиго Турс', 
                 'url': 'https://www.amigo-tours.ru/',  
-                'scraper': self.scrape_amigo-tours_site
+                'scraper': self.scrape_amigo_tours_site
             },
             {
                 'name': 'Ванд', 
@@ -420,7 +420,7 @@ class CurrencyScraper:
             {
                 'name': 'Space Travel', 
                 'url': 'https://pak-tour.com',  
-                'scraper': self.scrape_space-travel_site
+                'scraper': self.scrape_space_travel_site
             },
             {
                 'name': 'АртТур', 
