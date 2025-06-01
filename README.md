@@ -194,3 +194,84 @@ yc serverless function invoke --name currency-scraper
 4. **Мониторьте логи** на предмет подозрительной активности
 
 ## 10...
+
+{
+                'name': 'Клик Вояж', 
+                'url': 'https://clickvoyage.ru/',  
+                'scraper': self.scrape_clickvoyage_site
+            },
+            {
+                'name': 'Ambotis', 
+                'url': 'https://webcache.googleusercontent.com/search?q=cache:https://www.ambotis.ru/turagentstvam/informatsiya/kurs-valyut/',  
+                'scraper': self.scrape_ambotis_site
+            },
+            {
+                'name': 'Jet Travel', 
+                'url': 'https://www.jettravel.ru/',  
+                'scraper': self.scrape_jettravel_site
+            },
+            {
+                'name': 'Интурист', 
+                'url': 'https://intourist.ru/',  
+                'scraper': self.scrape_intourist_site
+            },
+            {
+                'name': 'TEZ Tour', 
+                'url': 'https://www.tez-tour.com/',  
+                'scraper': self.scrape_tez_tour_site
+            },
+            {
+                'name': 'Grand Travels', 
+                'url': 'https://grand-travels.ru/',  
+                'scraper': self.scrape_grand_travels_site
+            },
+            {
+                'name': 'Loti', 
+                'url': 'https://www.loti.ru/Currency',  
+                'scraper': self.scrape_loti_site
+            },
+            {
+                'name': 'Пантеон', 
+                'url': 'https://www.panteon.ru/',  
+                'scraper': self.scrape_panteon_site
+            },
+            {
+                'name': 'CruClub', 
+                'url': 'https://www.cruclub.ru/agent/howto/book/#pay',  
+                'scraper': self.scrape_cruclub_site
+            },
+            {
+                'name': 'Спектрум', 
+                'url': 'https://spectrum.ru/turagentam/',  
+                'scraper': self.scrape_spectrum_site
+            },
+            {
+                'name': 'Туртранс', 
+                'url': 'https://www.tourtrans.ru/',  
+                'scraper': self.scrape_tourtrans_site
+            },
+            {
+                'name': 'BSI', 
+                'url': 'https://www.bsigroup.ru/',  
+                'scraper': self.scrape_bsigroup_site
+            },
+            {
+                'name': 'Квинта', 
+                'url': 'https://www.quinta.ru/',  
+                'scraper': self.scrape_quinta_site
+            },
+            {
+                'name': 'Амиго Турс', 
+                'url': 'https://www.amigo-tours.ru/',  
+                'scraper': self.scrape_amigo_tours_site
+            },
+            {
+                'name': 'Ванд', 
+                'url': 'https://vand.ru/',  
+                'scraper': self.scrape_vand_site
+            },
+            {
+                'name': 'Space Travel', 
+                'url': 'https://pak-tour.com',  
+                'scraper': self.scrape_space_travel_site
+            },

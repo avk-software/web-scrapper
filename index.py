@@ -194,11 +194,11 @@ class CurrencyScraper:
             return []
         
         currency_div = soup.find('div', class_='page-header__currency')
-        if not currency_div:
-            raise CurrencyScraperError("Элемент page-header__currency не найден")
+        if not currency_div or not hasattr(currency_div, 'select_one'):
+            raise CurrencyScraperError("Элемент page-header__currency не найден или не является тегом")
         
-        eur_element = currency_div.select_one('ul li:nth-child(2) span.page-header__currency-value')
-        usd_element = currency_div.select_one('ul li:nth-child(1) span.page-header__currency-value')
+        eur_element = soup.select_one('div.page-header__currency ul li:nth-child(2) span.page-header__currency-value')
+        usd_element = soup.select_one('div.page-header__currency ul li:nth-child(1) span.page-header__currency-value')
         
         return [
             {
@@ -231,8 +231,9 @@ class CurrencyScraper:
         if not exchange_div:
             raise CurrencyScraperError("Элемент exchange-rates-block-items не найден")
         
-        eur_element = exchange_div.select_one('div:nth-child(2) div div.exchange-rates__currencies div:nth-child(1) span:nth-child(1)')
-        usd_element = exchange_div.select_one('div:nth-child(1) div div.exchange-rates__currencies div:nth-child(1) span:nth-child(1)')
+        # Используем soup.select_one с полным CSS-селектором относительно документа
+        eur_element = soup.select_one('div.mb-10.exchange-rates-block-items div:nth-child(2) div div.exchange-rates__currencies div:nth-child(1) span:nth-child(1)')
+        usd_element = soup.select_one('div.mb-10.exchange-rates-block-items div:nth-child(1) div div.exchange-rates__currencies div:nth-child(1) span:nth-child(1)')
         
         return [
             {
@@ -257,7 +258,7 @@ class CurrencyScraper:
     
     def scrape_icstrvl_site(self, url: str) -> List[Dict]:
         """Скреппинг сайта ICS"""
-        soup = self._make_request(url)
+        soup = self.make_request(url)
         if not soup:
             return []
         
@@ -265,42 +266,52 @@ class CurrencyScraper:
         if not exchange_block:
             return []
         
-        eur_rate = exchange_block.select('table tbody tr td:nth-child(2) div b:nth-child(3)')[0].get_text().strip()
-        usd_rate = exchange_block.select('table tbody tr td:nth-child(2) div b:nth-child(2)')[0].get_text().strip()
+        # Найти ближайший родительский тег table
+        parent_table = exchange_block.find_parent('table')
+        if not parent_table:
+            return []
+        
+        eur_rate = parent_table.select('tbody tr td:nth-child(2) div b:nth-child(3)')
+        usd_rate = parent_table.select('tbody tr td:nth-child(2) div b:nth-child(2)')
+        
+        eur_rate_text = eur_rate[0].get_text().strip() if eur_rate else ''
+        usd_rate_text = usd_rate[0].get_text().strip() if usd_rate else ''
             
         return [
-                {
-                    'id': 3991,
-                    'sectionId': 569,
-                    'name': 'EUR',
-                    'touroperator': 'ICS',
-                    'rate': eur_rate,
-                    'percentToCB': '',
-                    'delta': ''
-                },
-                {
-                    'id': 3993,
-                    'sectionId': 569,
-                    'name': 'USD',
-                    'touroperator': 'ICS',
-                    'rate': usd_rate,
-                    'percentToCB': '',
-                    'delta': ''
-                }
-            ]
+            {
+                'id': 3991,
+                'sectionId': 569,
+                'name': 'EUR',
+                'touroperator': 'ICS',
+                'rate': eur_rate_text,
+                'percentToCB': '',
+                'delta': ''
+            },
+            {
+                'id': 3993,
+                'sectionId': 569,
+                'name': 'USD',
+                'touroperator': 'ICS',
+                'rate': usd_rate_text,
+                'percentToCB': '',
+                'delta': ''
+            }
+        ]
     
     def scrape_arttour_site(self, url: str) -> List[Dict]:
         """Скреппинг сайта Арт Тур"""
-        soup = self._make_request(url)
+        soup = self.make_request(url)
         if not soup:
             return []
         
-        exchange_block = soup.find('#valuta-sl')
+        exchange_block = soup.select_one('#valuta-sl')
         if not exchange_block:
             return []
         
-        eur_rate = exchange_block.select('#cur_rates_eur')[0].get_text().strip()
-        usd_rate = exchange_block.select('#cur_rates_usd')[0].get_text().strip()
+        eur_element = soup.select_one('#cur_rates_eur')
+        usd_element = soup.select_one('#cur_rates_usd')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
             
         return [
             {
@@ -334,93 +345,13 @@ class CurrencyScraper:
             },
             {
                 'name': 'ПАКС',
-                'url': 'https://paks-tour.ru',  
+                'url': 'https://paks.ru/',  
                 'scraper': self.scrape_paks_site
             },
             {
                 'name': 'ПАК', 
-                'url': 'https://pak-tour.com',  
+                'url': 'https://www.pac.ru/',  
                 'scraper': self.scrape_pak_site
-            },
-            {
-                'name': 'Клик Вояж', 
-                'url': 'https://clickvoyage.ru/',  
-                'scraper': self.scrape_clickvoyage_site
-            },
-            {
-                'name': 'Ambotis', 
-                'url': 'https://webcache.googleusercontent.com/search?q=cache:https://www.ambotis.ru/turagentstvam/informatsiya/kurs-valyut/',  
-                'scraper': self.scrape_ambotis_site
-            },
-            {
-                'name': 'Jet Travel', 
-                'url': 'https://www.jettravel.ru/',  
-                'scraper': self.scrape_jettravel_site
-            },
-            {
-                'name': 'Интурист', 
-                'url': 'https://intourist.ru/',  
-                'scraper': self.scrape_intourist_site
-            },
-            {
-                'name': 'TEZ Tour', 
-                'url': 'https://www.tez-tour.com/',  
-                'scraper': self.scrape_tez_tour_site
-            },
-            {
-                'name': 'Grand Travels', 
-                'url': 'https://grand-travels.ru/',  
-                'scraper': self.scrape_grand_travels_site
-            },
-            {
-                'name': 'Loti', 
-                'url': 'https://www.loti.ru/Currency',  
-                'scraper': self.scrape_loti_site
-            },
-            {
-                'name': 'Пантеон', 
-                'url': 'https://www.panteon.ru/',  
-                'scraper': self.scrape_panteon_site
-            },
-            {
-                'name': 'CruClub', 
-                'url': 'https://www.cruclub.ru/agent/howto/book/#pay',  
-                'scraper': self.scrape_cruclub_site
-            },
-            {
-                'name': 'Спектрум', 
-                'url': 'https://spectrum.ru/turagentam/',  
-                'scraper': self.scrape_spectrum_site
-            },
-            {
-                'name': 'Туртранс', 
-                'url': 'https://www.tourtrans.ru/',  
-                'scraper': self.scrape_tourtrans_site
-            },
-            {
-                'name': 'BSI', 
-                'url': 'https://www.bsigroup.ru/',  
-                'scraper': self.scrape_bsigroup_site
-            },
-            {
-                'name': 'Квинта', 
-                'url': 'https://www.quinta.ru/',  
-                'scraper': self.scrape_quinta_site
-            },
-            {
-                'name': 'Амиго Турс', 
-                'url': 'https://www.amigo-tours.ru/',  
-                'scraper': self.scrape_amigo_tours_site
-            },
-            {
-                'name': 'Ванд', 
-                'url': 'https://vand.ru/',  
-                'scraper': self.scrape_vand_site
-            },
-            {
-                'name': 'Space Travel', 
-                'url': 'https://pak-tour.com',  
-                'scraper': self.scrape_space_travel_site
             },
             {
                 'name': 'АртТур', 
@@ -469,7 +400,7 @@ class EmailNotifier:
         self.smtp_port = smtp_port
         self.email = email
         self.password = password
-    
+
     def send_notification(self, subject: str, body: str, to_email: str):
         """Отправка email уведомления"""
         try:
@@ -495,9 +426,17 @@ class EmailNotifier:
 def send_results_to_api(data: Dict, api_url: str) -> bool:
     """Отправка результатов в API"""
     try:
-        response = requests.post(api_url, json=data, timeout=30)
-        response.raise_for_status()
-        logger.info("Данные успешно отправлены в API")
+        # Получение данных из запроса
+        # body = json.loads(event.get('body', '{}'))
+        body = data
+        
+        # Логирование полученных данных
+        logging.info(f"Получено {len(body.get('data', []))} записей")
+        logging.info(f"Статистика: {body.get('summary', {})}")
+
+        # response = requests.post(api_url, json=data, timeout=30)
+        # response.raise_for_status()
+        # logger.info("Данные успешно отправлены в API")
         return True
     except Exception as e:
         logger.error(f"Ошибка отправки в API: {str(e)}")
@@ -507,18 +446,21 @@ def handler(event, context):
     """Основная функция-обработчик для Yandex Cloud Functions"""
     
     # Получение переменных окружения
-    gmail_email = os.getenv('GMAIL_EMAIL')
-    gmail_password = os.getenv('GMAIL_PASSWORD')
-    target_email = os.getenv('TARGET_EMAIL', 'andrey.koldayev.onex.kz@gmail.com')
+    outlook_email = os.getenv('OUTLOOK_EMAIL')
+    outlook_password = os.getenv('OUTLOOK_PASSWORD')
+    target_email = os.getenv('TARGET_EMAIL', 'andrey.koldayev@r-express.ru')
     api_url = os.getenv('API_URL')
     
-    if not all([gmail_email, gmail_password, api_url]):
+    if not all([outlook_email, outlook_password, api_url]):
         error_msg = "Не все необходимые переменные окружения установлены"
         logger.error(error_msg)
         return {
             'statusCode': 500,
             'body': json.dumps({'error': error_msg})
         }
+    
+    # Явно указываем, что api_url теперь точно str, а не None
+    api_url_str: str = str(api_url)
     
     start_time = datetime.now()
     
@@ -531,22 +473,25 @@ def handler(event, context):
         results = scraper.scrape_all_sites()
         
         # Отправка результатов в API
-        api_success = send_results_to_api(results, api_url)
+        api_success = send_results_to_api(results, api_url_str)
         
         # Подготовка отчета
         summary = results['summary']
         execution_time = (datetime.now() - start_time).total_seconds()
         
         # Инициализация email notifier
+        if outlook_email is None or outlook_password is None:
+            raise ValueError("outlook_email and outlook_password environment variables must be set and not None")
+        # Явно приводим тип outlook_email к str, так как выше уже проверили на None
         notifier = EmailNotifier(
-            smtp_server='smtp.gmail.com',
+            smtp_server='smtp-mail.outlook.com',
             smtp_port=587,
-            email=gmail_email,
-            password=gmail_password
+            email=str(outlook_email),
+            password=str(outlook_password) if outlook_password is not None else ""
         )
         
         # Отправка уведомления при ошибках или всегда (в зависимости от настроек)
-        if summary['failed_sites'] > 0 or not api_success:
+        if summary['failed_sites'] > 0 or summary['errors'].__len__() > 0 or not api_success:
             subject = f"⚠️ Ошибки при скреппинге курсов валют - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
             
             body = f"""
@@ -590,10 +535,10 @@ def handler(event, context):
         # Отправка уведомления о критической ошибке
         try:
             notifier = EmailNotifier(
-                smtp_server='smtp.gmail.com',
+                smtp_server='smtp-mail.outlook.com',
                 smtp_port=587,
-                email=gmail_email,
-                password=gmail_password
+                email=str(outlook_email),
+                password=str(outlook_password) if outlook_password is not None else ""
             )
             
             subject = f"🚨 Критическая ошибка скреппинга - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
@@ -607,3 +552,7 @@ def handler(event, context):
             'statusCode': 500,
             'body': json.dumps({'error': error_msg})
         }
+    
+if __name__ == "__main__":
+    # Тестовый вызов функции для локального запуска
+    handler({}, {})
