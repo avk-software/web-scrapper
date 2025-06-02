@@ -256,6 +256,42 @@ class CurrencyScraper:
             }
         ]
     
+    def scrape_arttour_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Арт Тур"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('#valuta-sl')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('#cur_rates_eur')
+        usd_element = soup.select_one('#cur_rates_usd')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 3995,
+                'sectionId': 571,
+                'name': 'EUR',
+                'touroperator': 'Арт Тур',
+                'rate': eur_rate,
+                'percentToCB': '',
+                'delta': ''
+            },
+            {
+                'id': 3997,
+                'sectionId': 571,
+                'name': 'USD',
+                'touroperator': 'Арт Тур',
+                'rate': usd_rate,
+                'percentToCB': '',
+                'delta': ''
+            }
+        ]
+    
     def scrape_icstrvl_site(self, url: str) -> List[Dict]:
         """Скреппинг сайта ICS"""
         soup = self.make_request(url)
@@ -298,42 +334,633 @@ class CurrencyScraper:
             }
         ]
     
-    def scrape_arttour_site(self, url: str) -> List[Dict]:
-        """Скреппинг сайта Арт Тур"""
+    def scrape_space_travel_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Спейс"""
         soup = self.make_request(url)
         if not soup:
             return []
         
-        exchange_block = soup.select_one('#valuta-sl')
+        exchange_block = soup.select_one('#header > div > div.new-head > div.vall-st')
         if not exchange_block:
             return []
         
-        eur_element = soup.select_one('#cur_rates_eur')
-        usd_element = soup.select_one('#cur_rates_usd')
+        eur_element = soup.select_one('p:nth-child(3) > span.eur')
+        usd_element = soup.select_one('p:nth-child(2) > span.usd')
         eur_rate = eur_element.get_text().strip() if eur_element else ''
         usd_rate = usd_element.get_text().strip() if usd_element else ''
             
         return [
             {
-                'id': 3995,
-                'sectionId': 571,
+                'id': 3999,
+                'sectionId': 573,
                 'name': 'EUR',
-                'touroperator': 'Арт Тур',
+                'touroperator': 'Space',
                 'rate': eur_rate,
-                'percentToCB': '',
-                'delta': ''
+                '% к ЦБ': '',
+                'Δ, руб.': ''
             },
             {
-                'id': 3997,
-                'sectionId': 571,
+                'id': 4001,
+                'sectionId': 573,
                 'name': 'USD',
-                'touroperator': 'Арт Тур',
+                'touroperator': 'Space',
                 'rate': usd_rate,
-                'percentToCB': '',
-                'delta': ''
+                '% к ЦБ': '',
+                'Δ, руб.': ''
             }
         ]
     
+    def scrape_vand_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Ванда"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('#wrapper > header > div > div.header__course.d-none.d-lg-block')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div > span:nth-child(4) > span')
+        usd_element = soup.select_one('div > span:nth-child(3) > span')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 4005,
+                'sectionId': 575,
+                'name': 'EUR',
+                'touroperator': 'Ванд',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4005,
+                'sectionId': 575,
+                'name': 'USD',
+                'touroperator': 'Ванд',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+    
+    def scrape_amigo_tours_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Амиго Турс"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('div.exchRates__cont.header__top__item')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div:nth-child(1) > span.curr_rate')
+        usd_element = soup.select_one('div:nth-child(2) > span.curr_rate')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d+,\d+', eur_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 4009,
+                'sectionId': 577,
+                'name': 'EUR',
+                'touroperator': 'Амиго Турс',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4011,
+                'sectionId': 577,
+                'name': 'USD',
+                'touroperator': 'Амиго Турс',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+    
+    def scrape_quinta_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Квинты"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('div.main-container')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(2)')
+        usd_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(3')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d+,\d+', eur_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 4013,
+                'sectionId': 579,
+                'name': 'EUR',
+                'touroperator': 'Квинта',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4015,
+                'sectionId': 579,
+                'name': 'USD',
+                'touroperator': 'Квинта',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_bsigroup_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта BSI"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('div.fright-col')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div.col__left-30 div div div.cur-drop div:nth-child(2)')
+        usd_element = soup.select_one('div.col__left-30 div div div.cur-drop div:nth-child(1)')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d+,\d+', eur_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 4017,
+                'sectionId': 581,
+                'name': 'EUR',
+                'touroperator': 'BSI',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4019,
+                'sectionId': 581,
+                'name': 'USD',
+                'touroperator': 'BSI',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_tourtrans_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта ТурТрансВояж"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('div.currency')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div.currency ul li.inf span')
+        usd_element = soup.select_one('div.currency ul li.inf span')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d+,\d+', eur_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 4021,
+                'sectionId': 583,
+                'name': 'EUR',
+                'touroperator': 'ТурТрансВояж',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4023,
+                'sectionId': 583,
+                'name': 'USD',
+                'touroperator': 'ТурТрансВояж',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_spectrum_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Спектрум"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('body > main > header > div > div.d-flex.align-items-center.order-lg-4.d-none.d-lg-flex')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div:nth-child(2) > div')
+        usd_element = soup.select_one('div:nth-child(1) > div')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 4025,
+                'sectionId': 585,
+                'name': 'EUR',
+                'touroperator': 'Спектрум',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4027,
+                'sectionId': 585,
+                'name': 'USD',
+                'touroperator': 'Спектрум',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_cruclub_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Краски Мира"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('div.p_col.s1.last')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div:nth-child(1) > div.body.small.dlist > div:nth-child(2) > span')
+        usd_element = soup.select_one('div:nth-child(1) > div.body.small.dlist > div:nth-child(1) > span')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d+,\d+', eur_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 4029,
+                'sectionId': 587,
+                'name': 'EUR',
+                'touroperator': 'Краски Мира',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4031,
+                'sectionId': 587,
+                'name': 'USD',
+                'touroperator': 'Краски Мира',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_panteon_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Пантеона"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('div.b-courses.ajax-panel')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div.b-courses.ajax-panel div div.b-courses__col.b-courses__col--3 span.b-courses__rub2')
+        usd_element = soup.select_one('div.b-courses.ajax-panel div div.b-courses__col.b-courses__col--2 span.b-courses__rub1')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 4197,
+                'sectionId': 589,
+                'name': 'EUR',
+                'touroperator': 'Пантеон',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 4199,
+                'sectionId': 589,
+                'name': 'USD',
+                'touroperator': 'Пантеон',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+    
+    def scrape_loti_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта LOTi"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('body > div > main > div.htmlContentDiv')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('body > div > main > div.htmlContentDiv > div:nth-child(5) > div > div:nth-child(3)')
+        usd_element = soup.select_one('body > div > main > div.htmlContentDiv > div:nth-child(7) > div > div:nth-child(3)')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 17561,
+                'sectionId': 665,
+                'name': 'EUR',
+                'touroperator': 'LOTi',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 17563,
+                'sectionId': 665,
+                'name': 'USD',
+                'touroperator': 'LOTi',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+    
+    def scrape_grand_travels_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Гранд-Экспресс"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('body > table:nth-child(1) > tbody > tr:nth-child(1) > td:nth-child(2) > table > tbody > tr > td.p')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('span.pbl')
+        usd_element = soup.select_one('span.pbl')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d*\.\d+', eur_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 17613,
+                'sectionId': 667,
+                'name': 'EUR',
+                'touroperator': 'Гранд-Экспресс',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 17615,
+                'sectionId': 667,
+                'name': 'USD',
+                'touroperator': 'Гранд-Экспресс',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+    
+    def scrape_intourist_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Интуриста"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('#mainHeaderWrapper > div > header > div.main-header-right > div > div.main-header-right-top-right > div.main-header-item.main-header-item--currency > div > div')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div > div:nth-child(1) > div.main-header-item-popup-text.main-header-item-popup-text--3')
+        usd_element = soup.select_one('div > div:nth-child(1) > div.main-header-item-popup-text.main-header-item-popup-text--2')
+        eur_text = eur_element.get_text().strip() if eur_element else ''
+        usd_text = usd_element.get_text().strip() if usd_element else ''
+
+        eur_match = re.search(r'\d+,\d+', usd_text)
+        usd_match = re.search(r'\d+,\d+', usd_text)
+
+        eur_rate = eur_match.group(0) if eur_match else ''
+        usd_rate = usd_match.group(0) if usd_match else ''
+            
+        return [
+            {
+                'id': 3137,
+                'sectionId': 525,
+                'name': 'EUR',
+                'touroperator': 'Интурист',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 3139,
+                'sectionId': 525,
+                'name': 'USD',
+                'touroperator': 'Интурист',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_tez_tour_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Тез Тур"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        """Скреппинг сайта Тез Тура"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('#mainHeaderWrapper > div > header > div.main-header-right > div > div.main-header-right-top-right > div.main-header-item.main-header-item--currency > div > div')
+        if not exchange_block:
+            return []
+        
+        eur_element_tomorrow = soup.select_one('#rates > tbody > tr:nth-child(2) > td:nth-child(3)')
+        usd_element_tomorrow = soup.select_one('#rates > tbody > tr:nth-child(2) > td:nth-child(2)')
+
+        eur_element_today = soup.select_one('#rates > tbody > tr:nth-child(1) > td:nth-child(3)')
+        usd_element_today = soup.select_one('#rates > tbody > tr:nth-child(1) > td:nth-child(2)')
+
+        eur_rate = eur_element_tomorrow.group(0) if eur_element_tomorrow else eur_element_today
+        usd_rate = usd_element_tomorrow.group(0) if usd_element_tomorrow else usd_element_today
+            
+        return [
+            {
+                'id': 3149,
+                'sectionId': 533,
+                'name': 'EUR',
+                'touroperator': 'Тез Тур',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 3163,
+                'sectionId': 533,
+                'name': 'USD',
+                'touroperator': 'Тез Тур',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_jettravel_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Джет Тревел"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('body > div.row.mx-1 > div > div > div:nth-child(1) > div.col-lg-7.col-12.mt-4 > div > div.b-currency__list')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('span:nth-child(1) > span.b-currency__num')
+        usd_element = soup.select_one('span:nth-child(2) > span.b-currency__num')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 19377,
+                'sectionId': 677,
+                'name': 'EUR',
+                'touroperator': 'Джет Тревел',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 19375,
+                'sectionId': 677,
+                'name': 'USD',
+                'touroperator': 'Джет Тревел',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_ambotis_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Амботиса"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('body > div:nth-child(2) > div.page > footer > div > div > div:nth-child(3) > div > div:nth-child(1)')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('div > div > ul > li:nth-child(2) > span.currency__value')
+        usd_element = soup.select_one('div > div > ul > li:nth-child(1) > span.currency__value')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 3987,
+                'sectionId': 567,
+                'name': 'EUR',
+                'touroperator': 'Амботис',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 3989,
+                'sectionId': 567,
+                'name': 'USD',
+                'touroperator': 'Амботис',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
+    def scrape_clickvoyage_site(self, url: str) -> List[Dict]:
+        """Скреппинг сайта Клик Вояж"""
+        soup = self.make_request(url)
+        if not soup:
+            return []
+        
+        exchange_block = soup.select_one('body > header > div > div.row > div:nth-child(3) > div > table > tbody)')
+        if not exchange_block:
+            return []
+        
+        eur_element = soup.select_one('#EURid')
+        usd_element = soup.select_one('#USDid')
+        eur_rate = eur_element.get_text().strip() if eur_element else ''
+        usd_rate = usd_element.get_text().strip() if usd_element else ''
+            
+        return [
+            {
+                'id': 24381,
+                'sectionId': 681,
+                'name': 'EUR',
+                'touroperator': 'Клик Вояж',
+                'rate': eur_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            },
+            {
+                'id': 24379,
+                'sectionId': 681,
+                'name': 'USD',
+                'touroperator': 'Клик Вояж',
+                'rate': usd_rate,
+                '% к ЦБ': '',
+                'Δ, руб.': ''
+            }
+        ]
+
     def scrape_all_sites(self) -> Dict:
         """Скреппинг всех сайтов"""
         sites_config = [
@@ -362,6 +989,86 @@ class CurrencyScraper:
                 'name': 'ICS', 
                 'url': 'https://www.icstrvl.ru/index.html',  
                 'scraper': self.scrape_icstrvl_site
+            },
+            {
+                'name': 'Клик Вояж', 
+                'url': 'https://clickvoyage.ru/',  
+                'scraper': self.scrape_clickvoyage_site
+            },
+            {
+                'name': 'Ambotis', 
+                'url': 'https://webcache.googleusercontent.com/search?q=cache:https://www.ambotis.ru/turagentstvam/informatsiya/kurs-valyut/',  
+                'scraper': self.scrape_ambotis_site
+            },
+            {
+                'name': 'Jet Travel', 
+                'url': 'https://www.jettravel.ru/',  
+                'scraper': self.scrape_jettravel_site
+            },
+            {
+                'name': 'Интурист', 
+                'url': 'https://intourist.ru/',  
+                'scraper': self.scrape_intourist_site
+            },
+            {
+                'name': 'TEZ Tour', 
+                'url': 'https://www.tez-tour.com/',  
+                'scraper': self.scrape_tez_tour_site
+            },
+            {
+                'name': 'Grand Travels', 
+                'url': 'https://grand-travels.ru/',  
+                'scraper': self.scrape_grand_travels_site
+            },
+            {
+                'name': 'Loti', 
+                'url': 'https://www.loti.ru/Currency',  
+                'scraper': self.scrape_loti_site
+            },
+            {
+                'name': 'Пантеон', 
+                'url': 'https://www.panteon.ru/',  
+                'scraper': self.scrape_panteon_site
+            },
+            {
+                'name': 'CruClub', 
+                'url': 'https://www.cruclub.ru/agent/howto/book/#pay',  
+                'scraper': self.scrape_cruclub_site
+            },
+            {
+                'name': 'Спектрум', 
+                'url': 'https://spectrum.ru/turagentam/',  
+                'scraper': self.scrape_spectrum_site
+            },
+            {
+                'name': 'Туртранс', 
+                'url': 'https://www.tourtrans.ru/',  
+                'scraper': self.scrape_tourtrans_site
+            },
+            {
+                'name': 'BSI', 
+                'url': 'https://www.bsigroup.ru/',  
+                'scraper': self.scrape_bsigroup_site
+            },
+            {
+                'name': 'Квинта', 
+                'url': 'https://www.quinta.ru/',  
+                'scraper': self.scrape_quinta_site
+            },
+            {
+                'name': 'Амиго Турс', 
+                'url': 'https://www.amigo-tours.ru/',  
+                'scraper': self.scrape_amigo_tours_site
+            },
+            {
+                'name': 'Ванд', 
+                'url': 'https://vand.ru/',  
+                'scraper': self.scrape_vand_site
+            },
+            {
+                'name': 'Space Travel', 
+                'url': 'https://pak-tour.com',  
+                'scraper': self.scrape_space_travel_site
             }
         ]
         
