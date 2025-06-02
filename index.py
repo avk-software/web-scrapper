@@ -459,7 +459,7 @@ class CurrencyScraper:
             return []
         
         eur_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(2)')
-        usd_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(3')
+        usd_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(3)')
         eur_text = eur_element.get_text().strip() if eur_element else ''
         usd_text = usd_element.get_text().strip() if usd_element else ''
 
@@ -931,7 +931,7 @@ class CurrencyScraper:
         if not soup:
             return []
         
-        exchange_block = soup.select_one('body > header > div > div.row > div:nth-child(3) > div > table > tbody)')
+        exchange_block = soup.select_one('body > header > div > div.row > div:nth-child(3) > div > table > tbody')
         if not exchange_block:
             return []
         
@@ -1067,7 +1067,7 @@ class CurrencyScraper:
             },
             {
                 'name': 'Space Travel', 
-                'url': 'https://pak-tour.com',  
+                'url': 'https://www.space-travel.ru/',  
                 'scraper': self.scrape_space_travel_site
             }
         ]
