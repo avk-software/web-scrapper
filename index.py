@@ -82,7 +82,7 @@ class CurrencyScraper:
         ]
         
         for pattern in patterns:
-            match = re.search(pattern, text.replace(' ', ''))
+            match = re.search(pattern, text.replace(' ', ""))
             if match:
                 return match.group(1).replace(',', '.')
         
@@ -98,22 +98,22 @@ class CurrencyScraper:
         
         # Конфигурация туроператоров
         operators = [
-            {'id': 3153, 'sectionId': 539, 'name': 'EUR', 'touroperator': 'ЦБ РФ'},
-            {'id': 3167, 'sectionId': 539, 'name': 'USD', 'touroperator': 'ЦБ РФ'},
-            {'id': 3141, 'sectionId': 527, 'name': 'EUR', 'touroperator': 'Корал Трэвел'},
-            {'id': 3155, 'sectionId': 527, 'name': 'USD', 'touroperator': 'Корал Трэвел'},
-            {'id': 3147, 'sectionId': 531, 'name': 'EUR', 'touroperator': 'Санмар'},
-            {'id': 3161, 'sectionId': 531, 'name': 'USD', 'touroperator': 'Санмар'},
-            {'id': 3151, 'sectionId': 535, 'name': 'EUR', 'touroperator': 'Фан & Сан'},
-            {'id': 3165, 'sectionId': 535, 'name': 'USD', 'touroperator': 'Фан & Сан'},
-            {'id': 3129, 'sectionId': 521, 'name': 'EUR', 'touroperator': 'Анекс Тур'},
-            {'id': 3131, 'sectionId': 521, 'name': 'USD', 'touroperator': 'Анекс Тур'},
-            {'id': 3143, 'sectionId': 529, 'name': 'EUR', 'touroperator': 'Пегас Туристик'},
-            {'id': 3157, 'sectionId': 529, 'name': 'USD', 'touroperator': 'Пегас Туристик'},
-            {'id': 3145, 'sectionId': 537, 'name': 'EUR', 'touroperator': 'Русский Экспресс'},
-            {'id': 3159, 'sectionId': 537, 'name': 'USD', 'touroperator': 'Русский Экспресс'},
-            {'id': 3133, 'sectionId': 523, 'name': 'EUR', 'touroperator': 'Библио Глобус'},
-            {'id': 3135, 'sectionId': 523, 'name': 'USD', 'touroperator': 'Библио Глобус'}
+            {"id": 3153, "sectionId": 539, "name": "EUR", "touroperator": "ЦБ РФ"},
+            {"id": 3167, "sectionId": 539, "name": "USD", "touroperator": "ЦБ РФ"},
+            {"id": 3141, "sectionId": 527, "name": "EUR", "touroperator": "Корал Трэвел"},
+            {"id": 3155, "sectionId": 527, "name": "USD", "touroperator": "Корал Трэвел"},
+            {"id": 3147, "sectionId": 531, "name": "EUR", "touroperator": "Санмар"},
+            {"id": 3161, "sectionId": 531, "name": "USD", "touroperator": "Санмар"},
+            {"id": 3151, "sectionId": 535, "name": "EUR", "touroperator": "Фан & Сан"},
+            {"id": 3165, "sectionId": 535, "name": "USD", "touroperator": "Фан & Сан"},
+            {"id": 3129, "sectionId": 521, "name": "EUR", "touroperator": "Анекс Тур"},
+            {"id": 3131, "sectionId": 521, "name": "USD", "touroperator": "Анекс Тур"},
+            {"id": 3143, "sectionId": 529, "name": "EUR", "touroperator": "Пегас Туристик"},
+            {"id": 3157, "sectionId": 529, "name": "USD", "touroperator": "Пегас Туристик"},
+            {"id": 3145, "sectionId": 537, "name": "EUR", "touroperator": "Русский Экспресс"},
+            {"id": 3159, "sectionId": 537, "name": "USD", "touroperator": "Русский Экспресс"},
+            {"id": 3133, "sectionId": 523, "name": "EUR", "touroperator": "Библио Глобус"},
+            {"id": 3135, "sectionId": 523, "name": "USD", "touroperator": "Библио Глобус"}
         ]
         
         # Поиск таблицы
@@ -124,9 +124,9 @@ class CurrencyScraper:
         # Группировка операторов
         operator_groups = {}
         for op in operators:
-            if op['touroperator'] not in operator_groups:
-                operator_groups[op['touroperator']] = []
-            operator_groups[op['touroperator']].append(op)
+            if op["touroperator"] not in operator_groups:
+                operator_groups[op["touroperator"]] = []
+            operator_groups[op["touroperator"]].append(op)
         
         # Обработка каждого оператора
         for operator_name, operator_items in operator_groups.items():
@@ -134,16 +134,16 @@ class CurrencyScraper:
             
             if operator_data:
                 for item in operator_items:
-                    currency_data = operator_data['eur'] if item['name'] == 'EUR' else operator_data['usd']
+                    currency_data = operator_data['EUR'] if item['name'] == 'EUR' else operator_data['USD']
                     
                     results.append({
-                        'id': item['id'],
-                        'sectionId': item['sectionId'],
-                        'name': item['name'],
-                        'touroperator': item['touroperator'],
-                        'rate': currency_data['rate'],
-                        'percentToCB': currency_data['percentage'],
-                        'delta': currency_data['delta']
+                        "id": item["id"],
+                        "sectionId": item["sectionId"],
+                        "name": item["name"],
+                        "touroperator": item["touroperator"],
+                        "rate": currency_data["rate"],
+                        "% к ЦБ": currency_data["percentage"],
+                        "Δ, руб.": currency_data["Δ, руб."]
                     })
         
         return results
@@ -173,15 +173,15 @@ class CurrencyScraper:
                 cells = row.find_all('td')
                 if len(cells) >= 7:
                     return {
-                        'eur': {
-                            'rate': self.extract_rate(cells[1].get_text(strip=True)),
-                            'percentage': cells[2].get_text(strip=True),
-                            'delta': cells[3].get_text(strip=True)
+                        "EUR": {
+                            "rate": self.extract_rate(cells[1].get_text(strip=True)),
+                            "percentage": cells[2].get_text(strip=True),
+                            "Δ, руб.": cells[3].get_text(strip=True)
                         },
-                        'usd': {
-                            'rate': self.extract_rate(cells[4].get_text(strip=True)),
-                            'percentage': cells[5].get_text(strip=True),
-                            'delta': cells[6].get_text(strip=True)
+                        "USD": {
+                            "rate": self.extract_rate(cells[4].get_text(strip=True)),
+                            "percentage": cells[5].get_text(strip=True),
+                            "Δ, руб.": cells[6].get_text(strip=True)
                         }
                     }
         
@@ -202,22 +202,22 @@ class CurrencyScraper:
         
         return [
             {
-                'id': 3727,
-                'sectionId': 563,
-                'name': 'EUR',
-                'touroperator': 'ПАКС',
-                'rate': self.extract_rate(eur_element.get_text() if eur_element else ''),
-                'percentToCB': '',
-                'delta': ''
+                "id": 3727,
+                "sectionId": 563,
+                "name": "EUR",
+                "touroperator": "ПАКС",
+                "rate": self.extract_rate(eur_element.get_text() if eur_element else ""),
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3729,
-                'sectionId': 563,
-                'name': 'USD',
-                'touroperator': 'ПАКС',
-                'rate': self.extract_rate(usd_element.get_text() if usd_element else ''),
-                'percentToCB': '',
-                'delta': ''
+                "id": 3729,
+                "sectionId": 563,
+                "name": "USD",
+                "touroperator": "ПАКС",
+                "rate": self.extract_rate(usd_element.get_text() if usd_element else ""),
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -237,22 +237,22 @@ class CurrencyScraper:
         
         return [
             {
-                'id': 3873,
-                'sectionId': 565,
-                'name': 'EUR',
-                'touroperator': 'ПАК',
-                'rate': self.extract_rate(eur_element.get_text() if eur_element else ''),
-                'percentToCB': '',
-                'delta': ''
+                "id": 3873,
+                "sectionId": 565,
+                "name": "EUR",
+                "touroperator": "ПАК",
+                "rate": self.extract_rate(eur_element.get_text() if eur_element else ""),
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3875,
-                'sectionId': 565,
-                'name': 'USD',
-                'touroperator': 'ПАК',
-                'rate': self.extract_rate(usd_element.get_text() if usd_element else ''),
-                'percentToCB': '',
-                'delta': ''
+                "id": 3875,
+                "sectionId": 565,
+                "name": "USD",
+                "touroperator": "ПАК",
+                "rate": self.extract_rate(usd_element.get_text() if usd_element else ""),
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -268,27 +268,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('#cur_rates_eur')
         usd_element = soup.select_one('#cur_rates_usd')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 3995,
-                'sectionId': 571,
-                'name': 'EUR',
-                'touroperator': 'Арт Тур',
-                'rate': eur_rate,
-                'percentToCB': '',
-                'delta': ''
+                "id": 3995,
+                "sectionId": 571,
+                "name": "EUR",
+                "touroperator": "Арт Тур",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3997,
-                'sectionId': 571,
-                'name': 'USD',
-                'touroperator': 'Арт Тур',
-                'rate': usd_rate,
-                'percentToCB': '',
-                'delta': ''
+                "id": 3997,
+                "sectionId": 571,
+                "name": "USD",
+                "touroperator": "Арт Тур",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -310,27 +310,27 @@ class CurrencyScraper:
         eur_rate = parent_table.select('tbody tr td:nth-child(2) div b:nth-child(3)')
         usd_rate = parent_table.select('tbody tr td:nth-child(2) div b:nth-child(2)')
         
-        eur_rate_text = eur_rate[0].get_text().strip() if eur_rate else ''
-        usd_rate_text = usd_rate[0].get_text().strip() if usd_rate else ''
+        eur_rate_text = eur_rate[0].get_text().strip() if eur_rate else ""
+        usd_rate_text = usd_rate[0].get_text().strip() if usd_rate else ""
             
         return [
             {
-                'id': 3991,
-                'sectionId': 569,
-                'name': 'EUR',
-                'touroperator': 'ICS',
-                'rate': eur_rate_text,
-                'percentToCB': '',
-                'delta': ''
+                "id": 3991,
+                "sectionId": 569,
+                "name": "EUR",
+                "touroperator": "ICS",
+                "rate": eur_rate_text,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3993,
-                'sectionId': 569,
-                'name': 'USD',
-                'touroperator': 'ICS',
-                'rate': usd_rate_text,
-                'percentToCB': '',
-                'delta': ''
+                "id": 3993,
+                "sectionId": 569,
+                "name": "USD",
+                "touroperator": "ICS",
+                "rate": usd_rate_text,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -346,27 +346,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('p:nth-child(3) > span.eur')
         usd_element = soup.select_one('p:nth-child(2) > span.usd')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 3999,
-                'sectionId': 573,
-                'name': 'EUR',
-                'touroperator': 'Space',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3999,
+                "sectionId": 573,
+                "name": "EUR",
+                "touroperator": "Space",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4001,
-                'sectionId': 573,
-                'name': 'USD',
-                'touroperator': 'Space',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4001,
+                "sectionId": 573,
+                "name": "USD",
+                "touroperator": "Space",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -382,27 +382,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div > span:nth-child(4) > span')
         usd_element = soup.select_one('div > span:nth-child(3) > span')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 4005,
-                'sectionId': 575,
-                'name': 'EUR',
-                'touroperator': 'Ванд',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4005,
+                "sectionId": 575,
+                "name": "EUR",
+                "touroperator": "Ванд",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4005,
-                'sectionId': 575,
-                'name': 'USD',
-                'touroperator': 'Ванд',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4005,
+                "sectionId": 575,
+                "name": "USD",
+                "touroperator": "Ванд",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -418,33 +418,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div:nth-child(1) > span.curr_rate')
         usd_element = soup.select_one('div:nth-child(2) > span.curr_rate')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d+,\d+', eur_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 4009,
-                'sectionId': 577,
-                'name': 'EUR',
-                'touroperator': 'Амиго Турс',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4009,
+                "sectionId": 577,
+                "name": "EUR",
+                "touroperator": "Амиго Турс",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4011,
-                'sectionId': 577,
-                'name': 'USD',
-                'touroperator': 'Амиго Турс',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4011,
+                "sectionId": 577,
+                "name": "USD",
+                "touroperator": "Амиго Турс",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -460,33 +460,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(2)')
         usd_element = soup.select_one('header div div:nth-child(1) div:nth-child(3) div.courses div:nth-child(3)')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d+,\d+', eur_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 4013,
-                'sectionId': 579,
-                'name': 'EUR',
-                'touroperator': 'Квинта',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4013,
+                "sectionId": 579,
+                "name": "EUR",
+                "touroperator": "Квинта",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4015,
-                'sectionId': 579,
-                'name': 'USD',
-                'touroperator': 'Квинта',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4015,
+                "sectionId": 579,
+                "name": "USD",
+                "touroperator": "Квинта",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -502,33 +502,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div.col__left-30 div div div.cur-drop div:nth-child(2)')
         usd_element = soup.select_one('div.col__left-30 div div div.cur-drop div:nth-child(1)')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d+,\d+', eur_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 4017,
-                'sectionId': 581,
-                'name': 'EUR',
-                'touroperator': 'BSI',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4017,
+                "sectionId": 581,
+                "name": "EUR",
+                "touroperator": "BSI",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4019,
-                'sectionId': 581,
-                'name': 'USD',
-                'touroperator': 'BSI',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4019,
+                "sectionId": 581,
+                "name": "USD",
+                "touroperator": "BSI",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -544,33 +544,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div.currency ul li.inf span')
         usd_element = soup.select_one('div.currency ul li.inf span')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d+,\d+', eur_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 4021,
-                'sectionId': 583,
-                'name': 'EUR',
-                'touroperator': 'ТурТрансВояж',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4021,
+                "sectionId": 583,
+                "name": "EUR",
+                "touroperator": "ТурТрансВояж",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4023,
-                'sectionId': 583,
-                'name': 'USD',
-                'touroperator': 'ТурТрансВояж',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4023,
+                "sectionId": 583,
+                "name": "USD",
+                "touroperator": "ТурТрансВояж",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -586,27 +586,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div:nth-child(2) > div')
         usd_element = soup.select_one('div:nth-child(1) > div')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 4025,
-                'sectionId': 585,
-                'name': 'EUR',
-                'touroperator': 'Спектрум',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4025,
+                "sectionId": 585,
+                "name": "EUR",
+                "touroperator": "Спектрум",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4027,
-                'sectionId': 585,
-                'name': 'USD',
-                'touroperator': 'Спектрум',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4027,
+                "sectionId": 585,
+                "name": "USD",
+                "touroperator": "Спектрум",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -622,33 +622,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div:nth-child(1) > div.body.small.dlist > div:nth-child(2) > span')
         usd_element = soup.select_one('div:nth-child(1) > div.body.small.dlist > div:nth-child(1) > span')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d+,\d+', eur_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 4029,
-                'sectionId': 587,
-                'name': 'EUR',
-                'touroperator': 'Краски Мира',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4029,
+                "sectionId": 587,
+                "name": "EUR",
+                "touroperator": "Краски Мира",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4031,
-                'sectionId': 587,
-                'name': 'USD',
-                'touroperator': 'Краски Мира',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4031,
+                "sectionId": 587,
+                "name": "USD",
+                "touroperator": "Краски Мира",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -664,27 +664,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div.b-courses.ajax-panel div div.b-courses__col.b-courses__col--3 span.b-courses__rub2')
         usd_element = soup.select_one('div.b-courses.ajax-panel div div.b-courses__col.b-courses__col--2 span.b-courses__rub1')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 4197,
-                'sectionId': 589,
-                'name': 'EUR',
-                'touroperator': 'Пантеон',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4197,
+                "sectionId": 589,
+                "name": "EUR",
+                "touroperator": "Пантеон",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 4199,
-                'sectionId': 589,
-                'name': 'USD',
-                'touroperator': 'Пантеон',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 4199,
+                "sectionId": 589,
+                "name": "USD",
+                "touroperator": "Пантеон",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -700,27 +700,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('body > div > main > div.htmlContentDiv > div:nth-child(5) > div > div:nth-child(3)')
         usd_element = soup.select_one('body > div > main > div.htmlContentDiv > div:nth-child(7) > div > div:nth-child(3)')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 17561,
-                'sectionId': 665,
-                'name': 'EUR',
-                'touroperator': 'LOTi',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 17561,
+                "sectionId": 665,
+                "name": "EUR",
+                "touroperator": "LOTi",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 17563,
-                'sectionId': 665,
-                'name': 'USD',
-                'touroperator': 'LOTi',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 17563,
+                "sectionId": 665,
+                "name": "USD",
+                "touroperator": "LOTi",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -736,33 +736,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('span.pbl')
         usd_element = soup.select_one('span.pbl')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d*\.\d+', eur_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 17613,
-                'sectionId': 667,
-                'name': 'EUR',
-                'touroperator': 'Гранд-Экспресс',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 17613,
+                "sectionId": 667,
+                "name": "EUR",
+                "touroperator": "Гранд-Экспресс",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 17615,
-                'sectionId': 667,
-                'name': 'USD',
-                'touroperator': 'Гранд-Экспресс',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 17615,
+                "sectionId": 667,
+                "name": "USD",
+                "touroperator": "Гранд-Экспресс",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
     
@@ -778,33 +778,33 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div > div:nth-child(1) > div.main-header-item-popup-text.main-header-item-popup-text--3')
         usd_element = soup.select_one('div > div:nth-child(1) > div.main-header-item-popup-text.main-header-item-popup-text--2')
-        eur_text = eur_element.get_text().strip() if eur_element else ''
-        usd_text = usd_element.get_text().strip() if usd_element else ''
+        eur_text = eur_element.get_text().strip() if eur_element else ""
+        usd_text = usd_element.get_text().strip() if usd_element else ""
 
         eur_match = re.search(r'\d+,\d+', usd_text)
         usd_match = re.search(r'\d+,\d+', usd_text)
 
-        eur_rate = eur_match.group(0) if eur_match else ''
-        usd_rate = usd_match.group(0) if usd_match else ''
+        eur_rate = eur_match.group(0) if eur_match else ""
+        usd_rate = usd_match.group(0) if usd_match else ""
             
         return [
             {
-                'id': 3137,
-                'sectionId': 525,
-                'name': 'EUR',
-                'touroperator': 'Интурист',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3137,
+                "sectionId": 525,
+                "name": "EUR",
+                "touroperator": "Интурист",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3139,
-                'sectionId': 525,
-                'name': 'USD',
-                'touroperator': 'Интурист',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3139,
+                "sectionId": 525,
+                "name": "USD",
+                "touroperator": "Интурист",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -829,27 +829,27 @@ class CurrencyScraper:
         eur_element_today = soup.select_one('#rates > tbody > tr:nth-child(1) > td:nth-child(3)')
         usd_element_today = soup.select_one('#rates > tbody > tr:nth-child(1) > td:nth-child(2)')
 
-        eur_rate = eur_element_tomorrow.group(0) if eur_element_tomorrow else eur_element_today
-        usd_rate = usd_element_tomorrow.group(0) if usd_element_tomorrow else usd_element_today
+        eur_rate = eur_element_tomorrow.group(0) if eur_element_tomorrow else eur_element_today # type: ignore
+        usd_rate = usd_element_tomorrow.group(0) if usd_element_tomorrow else usd_element_today # type: ignore
             
         return [
             {
-                'id': 3149,
-                'sectionId': 533,
-                'name': 'EUR',
-                'touroperator': 'Тез Тур',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3149,
+                "sectionId": 533,
+                "name": "EUR",
+                "touroperator": "Тез Тур",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3163,
-                'sectionId': 533,
-                'name': 'USD',
-                'touroperator': 'Тез Тур',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3163,
+                "sectionId": 533,
+                "name": "USD",
+                "touroperator": "Тез Тур",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -865,27 +865,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('span:nth-child(1) > span.b-currency__num')
         usd_element = soup.select_one('span:nth-child(2) > span.b-currency__num')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 19377,
-                'sectionId': 677,
-                'name': 'EUR',
-                'touroperator': 'Джет Тревел',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 19377,
+                "sectionId": 677,
+                "name": "EUR",
+                "touroperator": "Джет Тревел",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 19375,
-                'sectionId': 677,
-                'name': 'USD',
-                'touroperator': 'Джет Тревел',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 19375,
+                "sectionId": 677,
+                "name": "USD",
+                "touroperator": "Джет Тревел",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -901,27 +901,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('div > div > ul > li:nth-child(2) > span.currency__value')
         usd_element = soup.select_one('div > div > ul > li:nth-child(1) > span.currency__value')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 3987,
-                'sectionId': 567,
-                'name': 'EUR',
-                'touroperator': 'Амботис',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3987,
+                "sectionId": 567,
+                "name": "EUR",
+                "touroperator": "Амботис",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 3989,
-                'sectionId': 567,
-                'name': 'USD',
-                'touroperator': 'Амботис',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 3989,
+                "sectionId": 567,
+                "name": "USD",
+                "touroperator": "Амботис",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -937,27 +937,27 @@ class CurrencyScraper:
         
         eur_element = soup.select_one('#EURid')
         usd_element = soup.select_one('#USDid')
-        eur_rate = eur_element.get_text().strip() if eur_element else ''
-        usd_rate = usd_element.get_text().strip() if usd_element else ''
+        eur_rate = eur_element.get_text().strip() if eur_element else ""
+        usd_rate = usd_element.get_text().strip() if usd_element else ""
             
         return [
             {
-                'id': 24381,
-                'sectionId': 681,
-                'name': 'EUR',
-                'touroperator': 'Клик Вояж',
-                'rate': eur_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 24381,
+                "sectionId": 681,
+                "name": "EUR",
+                "touroperator": "Клик Вояж",
+                "rate": eur_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             },
             {
-                'id': 24379,
-                'sectionId': 681,
-                'name': 'USD',
-                'touroperator': 'Клик Вояж',
-                'rate': usd_rate,
-                '% к ЦБ': '',
-                'Δ, руб.': ''
+                "id": 24379,
+                "sectionId": 681,
+                "name": "USD",
+                "touroperator": "Клик Вояж",
+                "rate": usd_rate,
+                "% к ЦБ": "",
+                "Δ, руб.": ""
             }
         ]
 
@@ -1134,17 +1134,17 @@ def send_results_to_api(data: Dict, api_url: str) -> bool:
     """Отправка результатов в API"""
     try:
         # Получение данных из запроса
-        # body = json.loads(event.get('body', '{}'))
         body = data
+        response_array = []
         
         # Логирование полученных данных
         logging.info(f"Получено {len(body.get('data', []))} записей")
         logging.info(f"Статистика: {body.get('summary', {})}")
+        logging.info(f"Данные JSON: {body.get('data', {})}")
 
-        # response = requests.post(api_url, json=data, timeout=30)
-        # response.raise_for_status()
-        # logger.info("Данные успешно отправлены в API")
+        
         return True
+    
     except Exception as e:
         logger.error(f"Ошибка отправки в API: {str(e)}")
         return False

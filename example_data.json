@@ -1,0 +1,362 @@
+[
+    {
+        "id": 3153,
+        "sectionId": 539,
+        "name": "EUR",
+        "touroperator": "ЦБ РФ",
+        "rate": "90.3770",
+        "percentToCB": "1.26%",
+        "delta": "1.13"
+    },
+    {
+        "id": 3167,
+        "sectionId": 539,
+        "name": "USD",
+        "touroperator": "ЦБ РФ",
+        "rate": "79.1285",
+        "percentToCB": "0.65%",
+        "delta": "0.51"
+    },
+    {
+        "id": 3141,
+        "sectionId": 527,
+        "name": "EUR",
+        "touroperator": "Корал Трэвел",
+        "rate": "96.23",
+        "percentToCB": "6.5%",
+        "delta": "1.20"
+    },
+    {
+        "id": 3155,
+        "sectionId": 527,
+        "name": "USD",
+        "touroperator": "Корал Трэвел",
+        "rate": "84.26",
+        "percentToCB": "6.5%",
+        "delta": "0.55"
+    },
+    {
+        "id": 3147,
+        "sectionId": 531,
+        "name": "EUR",
+        "touroperator": "Санмар",
+        "rate": "96.23",
+        "percentToCB": "6.5%",
+        "delta": "1.20"
+    },
+    {
+        "id": 3161,
+        "sectionId": 531,
+        "name": "USD",
+        "touroperator": "Санмар",
+        "rate": "84.26",
+        "percentToCB": "6.5%",
+        "delta": "0.55"
+    },
+    {
+        "id": 3151,
+        "sectionId": 535,
+        "name": "EUR",
+        "touroperator": "Фан & Сан",
+        "rate": "96.10",
+        "percentToCB": "6.3%",
+        "delta": "1.20"
+    },
+    {
+        "id": 3165,
+        "sectionId": 535,
+        "name": "USD",
+        "touroperator": "Фан & Сан",
+        "rate": "84.20",
+        "percentToCB": "6.4%",
+        "delta": "0.60"
+    },
+    {
+        "id": 3129,
+        "sectionId": 521,
+        "name": "EUR",
+        "touroperator": "Анекс Тур",
+        "rate": "96.25",
+        "percentToCB": "6.5%",
+        "delta": "1.20"
+    },
+    {
+        "id": 3131,
+        "sectionId": 521,
+        "name": "USD",
+        "touroperator": "Анекс Тур",
+        "rate": "84.27",
+        "percentToCB": "6.5%",
+        "delta": "0.54"
+    },
+    {
+        "id": 3143,
+        "sectionId": 529,
+        "name": "EUR",
+        "touroperator": "Пегас Туристик",
+        "rate": "96.25",
+        "percentToCB": "6.5%",
+        "delta": "1.20"
+    },
+    {
+        "id": 3157,
+        "sectionId": 529,
+        "name": "USD",
+        "touroperator": "Пегас Туристик",
+        "rate": "84.27",
+        "percentToCB": "6.5%",
+        "delta": "0.54"
+    },
+    {
+        "id": 3145,
+        "sectionId": 537,
+        "name": "EUR",
+        "touroperator": "Русский Экспресс",
+        "rate": "93.09",
+        "percentToCB": "3.0%",
+        "delta": "1.16"
+    },
+    {
+        "id": 3159,
+        "sectionId": 537,
+        "name": "USD",
+        "touroperator": "Русский Экспресс",
+        "rate": "81.51",
+        "percentToCB": "3.0%",
+        "delta": "0.53"
+    },
+    {
+        "id": 3133,
+        "sectionId": 523,
+        "name": "EUR",
+        "touroperator": "Библио Глобус",
+        "rate": "95.80",
+        "percentToCB": "6.0%",
+        "delta": "1.19"
+    },
+    {
+        "id": 3135,
+        "sectionId": 523,
+        "name": "USD",
+        "touroperator": "Библио Глобус",
+        "rate": "83.88",
+        "percentToCB": "6.0%",
+        "delta": "0.55"
+    },
+    {
+        "id": 3727,
+        "sectionId": 563,
+        "name": "EUR",
+        "touroperator": "ПАКС",
+        "rate": "94.90",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3729,
+        "sectionId": 563,
+        "name": "USD",
+        "touroperator": "ПАКС",
+        "rate": "83.10",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3873,
+        "sectionId": 565,
+        "name": "EUR",
+        "touroperator": "ПАК",
+        "rate": "94.8958",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3875,
+        "sectionId": 565,
+        "name": "USD",
+        "touroperator": "ПАК",
+        "rate": "83.0849",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3995,
+        "sectionId": 571,
+        "name": "EUR",
+        "touroperator": "Арт Тур",
+        "rate": "94.00",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3997,
+        "sectionId": 571,
+        "name": "USD",
+        "touroperator": "Арт Тур",
+        "rate": "81.90",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3991,
+        "sectionId": 569,
+        "name": "EUR",
+        "touroperator": "ICS",
+        "rate": "",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 3993,
+        "sectionId": 569,
+        "name": "USD",
+        "touroperator": "ICS",
+        "rate": "",
+        "percentToCB": "",
+        "delta": ""
+    },
+    {
+        "id": 19377,
+        "sectionId": 677,
+        "name": "EUR",
+        "touroperator": "Джет Тревел",
+        "rate": "95.8000",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 19375,
+        "sectionId": 677,
+        "name": "USD",
+        "touroperator": "Джет Тревел",
+        "rate": "83.9000",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4197,
+        "sectionId": 589,
+        "name": "EUR",
+        "touroperator": "Пантеон",
+        "rate": "92.3750",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4199,
+        "sectionId": 589,
+        "name": "USD",
+        "touroperator": "Пантеон",
+        "rate": "81.3687",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4021,
+        "sectionId": 583,
+        "name": "EUR",
+        "touroperator": "ТурТрансВояж",
+        "rate": "",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4023,
+        "sectionId": 583,
+        "name": "USD",
+        "touroperator": "ТурТрансВояж",
+        "rate": "",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4017,
+        "sectionId": 581,
+        "name": "EUR",
+        "touroperator": "BSI",
+        "rate": "",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4019,
+        "sectionId": 581,
+        "name": "USD",
+        "touroperator": "BSI",
+        "rate": "",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4013,
+        "sectionId": 579,
+        "name": "EUR",
+        "touroperator": "Квинта",
+        "rate": "",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4015,
+        "sectionId": 579,
+        "name": "USD",
+        "touroperator": "Квинта",
+        "rate": "",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4009,
+        "sectionId": 577,
+        "name": "EUR",
+        "touroperator": "Амиго Турс",
+        "rate": "95,7996",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4011,
+        "sectionId": 577,
+        "name": "USD",
+        "touroperator": "Амиго Турс",
+        "rate": "83,8762",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4005,
+        "sectionId": 575,
+        "name": "EUR",
+        "touroperator": "Ванд",
+        "rate": "93.7138",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4005,
+        "sectionId": 575,
+        "name": "USD",
+        "touroperator": "Ванд",
+        "rate": "82.5480",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 3999,
+        "sectionId": 573,
+        "name": "EUR",
+        "touroperator": "Space",
+        "rate": "92.64",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    },
+    {
+        "id": 4001,
+        "sectionId": 573,
+        "name": "USD",
+        "touroperator": "Space",
+        "rate": "81.11",
+        "% к ЦБ": "",
+        "Δ, руб.": ""
+    }
+]
